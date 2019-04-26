@@ -3,7 +3,7 @@
 # Node
 append_to NODE_PATH .
 
-export jsh="$s/js-helpers"
+export jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
 
 append_to_path "$HOME/node_modules/.bin"
 
