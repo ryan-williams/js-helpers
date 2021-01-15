@@ -9,7 +9,10 @@ append_to_path "$HOME/node_modules/.bin"
 
 if which brew &> /dev/null; then
   export NVM_DIR=~/.nvm
-  . $(brew --prefix nvm)/nvm.sh
+  nvm_dir="$(brew --prefix nvm)"
+  if [ -d "$nvm_dir" ]; then
+    . "$nvm_dir/nvm.sh"
+  fi
 fi
 
 defn nr npm run
