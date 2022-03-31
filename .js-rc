@@ -6,6 +6,7 @@ append_to NODE_PATH .
 export jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
 
 append_to_path "$HOME/node_modules/.bin"
+append_to_path "node_modules/.bin"
 
 if which brew &> /dev/null; then
   export NVM_DIR=~/.nvm
@@ -18,3 +19,8 @@ fi
 defn nr npm run
 
 defn ppj pretty-print-json.js
+
+defn jf jq -f
+defn jqf jq -f
+defn jr jq -r
+defn jqr jq -r
