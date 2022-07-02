@@ -5,8 +5,8 @@ append_to NODE_PATH .
 
 export jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
 
-append_to_path "$HOME/node_modules/.bin"
-append_to_path "node_modules/.bin"
+export PATH="$PATH:$HOME/node_modules/.bin"
+export PATH="$PATH:node_modules/.bin"
 
 if which brew &> /dev/null; then
   export NVM_DIR=~/.nvm
@@ -28,3 +28,12 @@ defn jqr jq -r
 defn nrb npm run build
 defn nrd npm run dev
 defn nrx npm run export
+
+declare_module() {
+    m="$1"; shift
+    d="node_modules/@types/$m"
+    mkdir -p "$d"
+    echo "declare module '$m';" > "$d/index.d.ts"
+}
+export -f declare_module
+defn dm declare_module
