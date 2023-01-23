@@ -18,7 +18,9 @@ fi
 
 defn nr npm run
 
-defn ppj pretty-print-json.js
+defn ppj pretty-print-json
+defn pjl pretty-print-json-less
+defn jql pretty-print-json-less
 
 defn jf jq -f
 defn jqf jq -f
