@@ -29,6 +29,7 @@ defn jqr jq -r
 
 defn nrb npm run build
 defn nrd npm run dev
+defn nrdk npm run docker
 defn nrx npm run export
 
 declare_module() {
