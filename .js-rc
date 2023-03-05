@@ -40,3 +40,8 @@ declare_module() {
 }
 export -f declare_module
 defn dm declare_module
+
+defn p2j parquet2json
+defn p2js parquet-2-json.sh schema
+defn p2jn parquet-2-json.sh rowcount
+defn p2jc parquet-2-json.sh cat
