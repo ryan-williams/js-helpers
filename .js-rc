@@ -33,10 +33,12 @@ defn nrdk npm run docker
 defn nrx npm run export
 
 defn nxd next dev
+defn nb next build
 defn nxb next build
+defn nx next export
 defn nxx next export
 next_build_export() {
-    next build && next export
+    next build && next export "$@"
 }
 export -f next_build_export
 defn nbx next_build_export
