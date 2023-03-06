@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-# Node
-append_to NODE_PATH .
-
+# Node helpers
 export jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
 
 export PATH="$PATH:$HOME/node_modules/.bin"
