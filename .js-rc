@@ -24,6 +24,7 @@ defn jf jq -f
 defn jqf jq -f
 defn jr jq -r
 defn jqr jq -r
+defn jqc jq -c
 
 defn nrb npm run build
 defn nrd npm run dev
