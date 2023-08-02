@@ -25,6 +25,12 @@ defn jqf jq -f
 defn jr jq -r
 defn jqr jq -r
 defn jqc jq -c
+defn jqn jq length
+jq_keys() {
+    jq -r 'keys[]' "$@"
+}
+export -f jq_keys
+defn jqk jq_keys
 
 defn nrb npm run build
 defn nrd npm run dev
