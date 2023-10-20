@@ -24,6 +24,8 @@ defn jf jq -f
 defn jqf jq -f
 defn jr jq -r
 defn jqr jq -r
+defn jqrs jq -rs
+defn jqs jq -s
 defn jqc jq -c
 defn jqn jq length
 jq_keys() {
@@ -32,9 +34,40 @@ jq_keys() {
 export -f jq_keys
 defn jqk jq_keys
 
+jq_lines_to_array() {
+    jq -nR '[inputs | select(length>0)]' "$@"
+}
+export -f jq_lines_to_array
+defn jql2a jq_lines_to_array
+
+jq_lines_to_numbers() {
+    jq_lines_to_array "$@" | jq 'map(tonumber)'
+}
+export -f jq_lines_to_numbers
+defn jql2n jq_lines_to_numbers
+
+sum() {
+    jq_lines_to_numbers "$@" | jq add
+}
+export -f sum
+
+alias hsum="numfmt --from=iec | sum | numfmt --to=iec"
+alias hrs="numfmt --from=iec | sum | numfmt --to=iec"
+
+max() {
+    jq_lines_to_numbers "$@" | jq max
+}
+export -f max
+
+min() {
+    jq_lines_to_numbers "$@" | jq min
+}
+export -f min
+
 defn nrb npm run build
 defn nrd npm run dev
 defn nrdk npm run docker
+defn nrt npm run test
 defn nrx npm run export
 
 defn nxd next dev
