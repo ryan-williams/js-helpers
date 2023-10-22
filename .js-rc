@@ -51,8 +51,17 @@ sum() {
 }
 export -f sum
 
-alias hsum="numfmt --from=iec | sum | numfmt --to=iec"
-alias hrs="numfmt --from=iec | sum | numfmt --to=iec"
+human_readable_sum() {
+    col="${1:-1}"
+    awk "{ print \$$col }" | numfmt --from=iec | sum | numfmt --to=iec
+}
+export -f human_readable_sum
+defn hsum human_readable_sum
+defn hsum2 human_readable_sum 2
+defn hsum3 human_readable_sum 3
+defn hrs human_readable_sum
+defn hrs2 human_readable_sum 2
+defn hrs3 human_readable_sum 3
 
 max() {
     jq_lines_to_numbers "$@" | jq max
