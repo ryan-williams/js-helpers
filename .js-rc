@@ -73,6 +73,13 @@ min() {
 }
 export -f min
 
+singleton() {
+    jq -e "if (. | length) == 1 then .[0] else null end" "$@"
+}
+export -f singleton
+defn jq1 singleton
+defn j1 singleton
+
 defn nrb npm run build
 defn nrd npm run dev
 defn nrdk npm run docker
