@@ -83,6 +83,7 @@ defn j1 singleton
 defn nrb npm run build
 defn nrd npm run dev
 defn nrdk npm run docker
+defn nrl npm run lint
 defn nrt npm run test
 defn nrx npm run export
 
