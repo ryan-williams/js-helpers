@@ -17,6 +17,16 @@ fi
 defn nr npm run
 
 defn ppj pretty-print-json
+pretty_print_json_inplace() {
+    tmp="$(mktemp)"
+    for arg in "$@"; do
+        cat "$arg" | jq > "$tmp"
+        mv "$tmp" "$arg"
+    done
+}
+export -f pretty_print_json_inplace
+defn ppji pretty_print_json_inplace
+defn pji pretty_print_json_inplace
 defn pjl pretty-print-json-less
 defn jql pretty-print-json-less
 
@@ -116,3 +126,5 @@ defn p2jc parquet-2-json.sh cat
 defn y yarn
 defn yb yarn build
 defn yi yarn install
+
+defn yr yq -r
