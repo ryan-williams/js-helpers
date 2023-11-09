@@ -128,3 +128,8 @@ defn yb yarn build
 defn yi yarn install
 
 defn yr yq -r
+
+defn cna npx create-next-app
+defn cnat npx create-next-app --ts
+defn cnatn npx create-next-app --ts --use-npm
+defn cnatp npx create-next-app --ts --use-pnpm
