@@ -20,7 +20,7 @@ defn ppj pretty-print-json
 pretty_print_json_inplace() {
     tmp="$(mktemp)"
     for arg in "$@"; do
-        cat "$arg" | jq > "$tmp"
+        cat "$arg" | jq . > "$tmp"
         mv "$tmp" "$arg"
     done
 }
