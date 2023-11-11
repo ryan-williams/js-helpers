@@ -30,6 +30,7 @@ defn pji pretty_print_json_inplace
 defn pjl pretty-print-json-less
 defn jql pretty-print-json-less
 
+defn jq. jq .
 defn jf jq -f
 defn jqf jq -f
 defn jr jq -r
