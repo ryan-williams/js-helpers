@@ -90,6 +90,16 @@ singleton() {
 export -f singleton
 defn jq1 singleton
 defn j1 singleton
+defn s1 singleton
+
+keys() {
+    jq -r 'keys[]' "$@"
+}
+export -f keys
+defn ks keys
+
+defn len jq length
+defn jlen jq length
 
 defn nrb npm run build
 defn nrd npm run dev
@@ -123,6 +133,25 @@ defn p2j parquet2json
 defn p2js parquet-2-json.sh schema
 defn p2jn parquet-2-json.sh rowcount
 defn p2jc parquet-2-json.sh cat
+defn p2jcc parquet-2-json.sh cat -c
+defn p2jcl parquet-2-json.sh cat -l
+defn p2jcl1 parquet-2-json.sh cat -l 1
+defn p2jcn parquet-2-json.sh cat -l
+
+parquet_pretty_print_n() {
+    if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+        echo "Usage: $0 <n> [path]" >&2
+        return 1
+    fi
+    n="$1"; shift
+    if [ $# -eq 0 ]; then
+        parquet2json <(cat) cat -l $n | jq .
+    else
+        parquet2json "$1" cat -l $n | jq .
+    fi
+}
+export -f parquet_pretty_print_n
+defn p2jcnq parquet_pretty_print_n
 
 defn y yarn
 defn yb yarn build
