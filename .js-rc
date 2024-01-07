@@ -20,9 +20,9 @@ defn npi npm i
 defn npl npm ls
 defn npln npm link
 
-defn pni npm i
-defn pnl npm ls
-defn pnln npm link
+defn pni pnpm i
+defn pnl pnpm ls
+defn pnln pnpm link
 
 defn ppj pretty-print-json
 pretty_print_json_inplace() {
