@@ -17,12 +17,51 @@ fi
 defn nr npm run
 
 defn npi npm i
+defn npid npm i -D
+npm_install_dev_types() {
+    for arg in "$@"; do
+        npm i -D @types/"$arg"
+    done
+}
+export -f npm_install_dev_types
+defn npidt npm_install_dev_types
+defn npig npm i -g
 defn npl npm ls
+defn npla npm ls --all
 defn npln npm link
+defn npui npm uninstall
 
 defn pni pnpm i
+defn pnid pnpm i -D
+pnpm_install_dev_types() {
+    for arg in "$@"; do
+        pnpm i -D @types/"$arg"
+    done
+}
+export -f pnpm_install_dev_types
+defn pnidt pnpm_install_dev_types
 defn pnl pnpm ls
+defn pnld pnpm ls --depth
+defn pnl0 pnpm ls --depth 0
+defn pnl1 pnpm ls --depth 1
+defn pnl2 pnpm ls --depth 2
+defn pnl3 pnpm ls --depth 3
+defn pnl4 pnpm ls --depth 4
+defn pnl5 pnpm ls --depth 5
+defn pnu pnpm update
+
 defn pnln pnpm link
+pnpm_link_ls() {
+    for path in "$@"; do
+        echo "Linking $path" >&2
+        pnpm link "$path"
+        pkg="$(jq -r .name < "$path/package.json")"
+        echo "pnpm ls $pkg" >&2
+        pnpm ls "$pkg"
+    done
+}
+export -f pnpm_link_ls
+defn pnll pnpm_link_ls
 
 defn ppj pretty-print-json
 pretty_print_json_inplace() {
@@ -37,6 +76,15 @@ defn ppji pretty_print_json_inplace
 defn pji pretty_print_json_inplace
 defn pjl pretty-print-json-less
 defn jql pretty-print-json-less
+
+jq_inplace() {
+    tmp="$(mktemp)"
+    jq "$@" > "$tmp"
+    last="${@: -1}"
+    mv "$tmp" "$last"
+}
+export -f jq_inplace
+defn jqi jq_inplace
 
 defn jq. jq .
 defn jf jq -f
@@ -110,8 +158,11 @@ defn len jq length
 defn jlen jq length
 
 defn nrb npm run build
+defn nrc npm run clean
+defn nrcb npm run cleanbuild
 defn nrd npm run dev
 defn nrdk npm run docker
+defn nrib npm run install-build
 defn nrl npm run lint
 defn nrt npm run test
 defn nrx npm run export
@@ -145,6 +196,7 @@ defn p2jcc parquet-2-json.sh cat -c
 defn p2jcl parquet-2-json.sh cat -l
 defn p2jcl1 parquet-2-json.sh cat -l 1
 defn p2jcn parquet-2-json.sh cat -l
+defn p2jh parquet-2-json.sh cat -l 10
 
 parquet_pretty_print_n() {
     if [ $# -eq 0 ] || [ $# -gt 2 ]; then
@@ -171,3 +223,22 @@ defn cna npx create-next-app
 defn cnat npx create-next-app --ts
 defn cnatn npx create-next-app --ts --use-npm
 defn cnatp npx create-next-app --ts --use-pnpm
+
+defn jqi1 jqi --indent 1
+defn jqi2 jqi --indent 2
+defn jqi4 jqi --indent 4
+defn jqi1. jqi --indent 1 .
+defn jqi2. jqi --indent 2 .
+defn jqi4. jqi --indent 4 .
+defn jqi1a jqi --indent 1 -a
+defn jqi2a jqi --indent 2 -a
+defn jqi4a jqi --indent 4 -a
+defn jqi1a. jqi --indent 1 -a .
+defn jqi2a. jqi --indent 2 -a .
+defn jqi4a. jqi --indent 4 -a .
+
+notebook_reindent_delete_ids() {
+    jqi4a '.cells |= map(del(.id))' "$@"
+}
+export -f notebook_reindent_delete_ids
+defn nrdi notebook_reindent_delete_ids
