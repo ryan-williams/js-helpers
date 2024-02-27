@@ -81,7 +81,11 @@ jq_inplace() {
     tmp="$(mktemp)"
     jq "$@" > "$tmp"
     last="${@: -1}"
-    mv "$tmp" "$last"
+    if [ -s "$tmp" ]; then
+        mv "$tmp" "$last"
+    else
+        return 1
+    fi
 }
 export -f jq_inplace
 defn jqi jq_inplace
@@ -198,6 +202,12 @@ defn p2jcl1 parquet-2-json.sh cat -l 1
 defn p2jcn parquet-2-json.sh cat -l
 defn p2jh parquet-2-json.sh cat -l 10
 
+parquet2json_head_pretty() {
+    parquet-2-json.sh cat -l "$@" | jq .
+}
+export -f parquet2json_head_pretty
+defn p2jhp parquet2json_head_pretty
+
 parquet_pretty_print_n() {
     if [ $# -eq 0 ] || [ $# -gt 2 ]; then
         echo "Usage: $0 <n> [path]" >&2
@@ -242,3 +252,22 @@ notebook_reindent_delete_ids() {
 }
 export -f notebook_reindent_delete_ids
 defn nrdi notebook_reindent_delete_ids
+
+parquet2json_all() {
+    local tmpfile=
+    if [ $# -eq 0 ] || ([ $# -eq 1 ] && [ "$1" == "-" ]); then
+        tmpfile="$(mktemp)"
+        cat > "$tmpfile"
+        set -- "$tmpfile"
+    fi
+    parquet-2-json.sh rowcount "$@" && \
+    parquet-2-json.sh schema "$@" && \
+    parquet-2-json.sh cat -l 10 "$@"
+    rv=$?
+    if [ -n "$tmpfile" ]; then
+        rm "$tmpfile"
+    fi
+    return $rv
+}
+export -f parquet2json_all
+defn p2ja parquet2json_all

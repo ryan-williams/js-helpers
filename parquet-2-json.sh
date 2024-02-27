@@ -12,9 +12,30 @@
 #
 # $ parquet2json <FILE> <SUBCOMMAND> [OPTIONS]
 #
-# EIther way, putting the arg last, and the cmd and its options first, makes lots of other piping and wrapping easier.
+# Either way, putting the arg last, and the cmd and its options first, makes lots of other piping and wrapping easier.
+#
+# Additionally, this wrapper supports reading input data from stdin (which parquet2json doesn't support).
+
+set -e
 
 last="${@:(($#))}"  # path
 set -- "${@:1:$(($#-1))}"
 
-parquet2json "$last" "$@"
+if [ $# -eq 0 ]; then
+    tmpfile="$(mktemp)"
+    cat > "$tmpfile"
+    parquet2json "$tmpfile" "$last"
+    rv=$?
+    rm "$tmpfile"
+    exit $rv
+elif [ "$last" == "-" ]; then
+    tmpfile="$(mktemp)"
+    cat > "$tmpfile"
+    parquet2json "$tmpfile" "$@"
+    rv=$?
+    rm "$tmpfile"
+    exit $rv
+else
+    parquet2json "$last" "$@"
+    exit $rv
+fi
