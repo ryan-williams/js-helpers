@@ -32,6 +32,13 @@ defn npln npm link
 defn npui npm uninstall
 
 defn pni pnpm i
+pnpm_install_file() {
+    for arg in "$@"; do
+        pnpm i "file://$arg"
+    done
+}
+export -f pnpm_install_file
+defn pnif pnpm_install_file
 defn pnid pnpm i -D
 pnpm_install_dev_types() {
     for arg in "$@"; do
