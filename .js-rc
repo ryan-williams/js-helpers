@@ -69,6 +69,8 @@ pnpm_link_ls() {
 }
 export -f pnpm_link_ls
 defn pnll pnpm_link_ls
+defn pnui pnpm uninstall
+defn pnrm pnpm uninstall
 
 defn ppj pretty-print-json
 pretty_print_json_inplace() {
