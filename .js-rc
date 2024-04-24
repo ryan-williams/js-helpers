@@ -154,12 +154,33 @@ min() {
 export -f min
 
 singleton() {
-    jq -e "if (. | length) == 1 then .[0] else null end" "$@"
+    jq "
+        if (. | length) == 1 then
+            .[0]
+        else
+            error(\"Expected 1 element, found \" + (.|length|tostring) + \": \" + (.|tostring))
+        end
+    " | jq "${@:-.}"
 }
 export -f singleton
 defn jq1 singleton
 defn j1 singleton
 defn s1 singleton
+
+singleton_object() {
+    k="$1"; shift
+    if [ "${k:0:1}" == "." ]; then
+        k="${k:1}"
+    fi
+    jq "
+        if (. | length) == 1 and has(\"$k\") then
+            .$k
+        else
+            error(\"Expected object with single key \\\"$k\\\", found {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
+        end
+    " "$@"
+}
+defn o1 singleton_object
 
 keys() {
     jq -r 'keys[]' "$@"
