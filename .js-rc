@@ -100,7 +100,6 @@ export -f jq_inplace
 defn jqi jq_inplace
 
 defn jq. jq .
-defn jf jq -f
 defn jqf jq -f
 defn jr jq -r
 defn jqr jq -r
@@ -153,6 +152,11 @@ min() {
 }
 export -f min
 
+jq_filter() {
+    jq 'if length == 0 then null else . end | select(.)' "$@"
+}
+defn jf jq_filter
+
 singleton() {
     jq "
         if (. | length) == 1 then
@@ -165,6 +169,7 @@ singleton() {
 export -f singleton
 defn jq1 singleton
 defn j1 singleton
+defn j1r singleton -r
 defn s1 singleton
 
 singleton_object() {
