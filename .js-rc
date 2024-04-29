@@ -155,6 +155,7 @@ export -f min
 jq_filter() {
     jq 'if length == 0 then null else . end | select(.)' "$@"
 }
+export -f jq_filter
 defn jf jq_filter
 
 singleton() {
@@ -185,6 +186,7 @@ singleton_object() {
         end
     " "$@"
 }
+export -f singleton_object
 defn o1 singleton_object
 
 keys() {
