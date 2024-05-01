@@ -159,7 +159,12 @@ export -f jq_filter
 defn jf jq_filter
 
 singleton() {
-    jq "
+    args=()
+    if [ "$1" == -s ]; then
+        args+=(-s)
+        shift
+    fi
+    jq "${args[@]}" "
         if (. | length) == 1 then
             .[0]
         else
@@ -171,6 +176,8 @@ export -f singleton
 defn jq1 singleton
 defn j1 singleton
 defn j1r singleton -r
+defn j1s singleton -s
+defn j1rs singleton -s -r
 defn s1 singleton
 
 singleton_object() {
