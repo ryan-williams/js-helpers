@@ -135,6 +135,7 @@ human_readable_sum() {
     awk "{ print \$$col }" | numfmt --from=iec | sum | numfmt --to=iec
 }
 export -f human_readable_sum
+defn ths human_readable_sum
 defn hsum human_readable_sum
 defn hsum2 human_readable_sum 2
 defn hsum3 human_readable_sum 3
