@@ -213,6 +213,7 @@ defn nrd npm run dev
 defn nrdk npm run docker
 defn nrib npm run install-build
 defn nrl npm run lint
+defn nrs npm run start
 defn nrt npm run test
 defn nrx npm run export
 
