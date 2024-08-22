@@ -182,6 +182,11 @@ defn j1rs singleton -s -r
 defn s1 singleton
 
 singleton_object() {
+    flags=()
+    while [[ "$1" == -* ]]; do
+        flags+=("$1")
+        shift
+    done
     k="$1"; shift
     if [ "${k:0:1}" == "." ]; then
         k="${k:1}"
@@ -192,10 +197,11 @@ singleton_object() {
         else
             error(\"Expected object with single key \\\"$k\\\", found {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
         end
-    " "$@"
+    " "${flags[@]}" "$@"
 }
 export -f singleton_object
 defn o1 singleton_object
+defn o1r singleton_object -r
 
 keys() {
     jq -r 'keys[]' "$@"
