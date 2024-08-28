@@ -338,3 +338,16 @@ parquet2json_all() {
 }
 export -f parquet2json_all
 defn p2ja parquet2json_all
+
+url_encode() {
+  # jq -sRr @uri  # doesn't strip newline
+  python3 -c "import sys, urllib.parse as ul; print(ul.quote(sys.stdin.read().rstrip('\n'), safe=''))"
+}
+export -f url_encode
+defn ue url_encode
+
+url_decode() {
+  python3 -c "import sys, urllib.parse as ul; print(ul.unquote(sys.stdin.read().rstrip('\n')))"
+}
+export -f url_decode
+defn ud url_decode
