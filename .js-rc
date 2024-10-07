@@ -351,3 +351,7 @@ url_decode() {
 }
 export -f url_decode
 defn ud url_decode
+
+defn yqxj yq -p=xml -oj
+defn yxj yq -p=xml -oj
+defn yxjr yq -p=xml -oj -r
