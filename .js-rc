@@ -254,6 +254,7 @@ defn p2jcl parquet-2-json.sh cat -l
 defn p2jcl1 parquet-2-json.sh cat -l 1
 defn p2jcn parquet-2-json.sh cat -l
 defn p2jh parquet-2-json.sh cat -l 10
+defn p2jhn parquet-2-json.sh cat -l
 
 parquet2json_jq() {
     if [ $# -eq 0 ]; then
@@ -262,8 +263,6 @@ parquet2json_jq() {
     fi
     query="${@: -1}"
     set -- "${@:1:$#-1}"
-    #echo "query: $query" >&2
-    #echo "$# args: $@" >&2
     parquet-2-json.sh cat "$@" | jq "$query"
 }
 export -f parquet2json_jq
