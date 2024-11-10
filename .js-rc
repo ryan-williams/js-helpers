@@ -356,6 +356,7 @@ parquet2json_all() {
 }
 export -f parquet2json_all
 defn p2ja parquet2json_all
+defn pqa parquet2json_all
 
 url_encode() {
   # jq -sRr @uri  # doesn't strip newline
