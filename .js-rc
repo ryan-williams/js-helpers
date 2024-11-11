@@ -267,7 +267,7 @@ defn pqhn parquet-2-json.sh cat -l
 
 parquet2json_jq() {
     if [ $# -eq 0 ]; then
-        echo "Usage: parquet2json_jq [...args] <jq-filter>" >&2
+        echo "Usage: ${FUNCNAME[0]} [...args] <jq-filter>" >&2
         return 1
     fi
     local _query=("${@: -1}")
@@ -295,7 +295,7 @@ defn pqt parquet2jon_sort
 
 parquet_pretty_print_n() {
     if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-        echo "Usage: $0 <n> [path]" >&2
+        echo "Usage: ${FUNCNAME[0]} <n> [path]" >&2
         return 1
     fi
     n="$1"; shift
