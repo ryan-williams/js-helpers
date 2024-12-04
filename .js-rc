@@ -227,9 +227,32 @@ defn ks keys
 defn len jq length
 defn jlen jq length
 
+npm_run_clean_dev() {
+    npm run clean && npm run dev -- "$@"
+}
+export -f npm_run_clean_dev
+defn nrcd npm_run_clean_dev
+
+npm_run_clean_compile_dev() {
+    npm run clean && npm run tc && npm run dev -- "$@"
+}
+export -f npm_run_clean_compile_dev
+defn nrctd npm_run_clean_compile_dev
+
+npm_run_clean_build() {
+    npm run clean && npm run build
+}
+export -f npm_run_clean_build
+defn nrcb npm_run_clean_build
+
+npm_run_build_start() {
+    npm run build && npm run start -- "$@"
+}
+export -f npm_run_build_start
+defn nrbs npm_run_build_start
+
 defn nrb npm run build
 defn nrc npm run clean
-defn nrcb npm run cleanbuild
 defn nrd npm run dev
 defn nrdk npm run docker
 defn nrib npm run install-build
