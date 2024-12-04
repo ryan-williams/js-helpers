@@ -101,6 +101,8 @@ defn jqi jq_inplace
 
 defn jq. jq .
 defn jqf jq -f
+defn jj jq -j
+defn jqj jq -j
 defn jr jq -r
 defn jqr jq -r
 defn jqrs jq -rs
