@@ -39,7 +39,17 @@ pnpm_install_file() {
 }
 export -f pnpm_install_file
 defn pnif pnpm_install_file
+
 defn pnid pnpm i -D
+
+pnpm_install_dev_file() {
+    for arg in "$@"; do
+        pnpm i -D "file://$arg"
+    done
+}
+export -f pnpm_install_dev_file
+defn pnidf pnpm_install_dev_file
+
 pnpm_install_dev_types() {
     for arg in "$@"; do
         pnpm i -D @types/"$arg"
