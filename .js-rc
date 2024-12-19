@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Node helpers
-export jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
+jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
+export jsh
 
 export PATH="$PATH:$HOME/node_modules/.bin"
 export PATH="$PATH:node_modules/.bin"
@@ -86,7 +87,7 @@ defn ppj pretty-print-json
 pretty_print_json_inplace() {
     tmp="$(mktemp)"
     for arg in "$@"; do
-        cat "$arg" | jq . > "$tmp"
+        jq . "$arg" > "$tmp"
         mv "$tmp" "$arg"
     done
 }
@@ -99,7 +100,7 @@ defn jql pretty-print-json-less
 jq_inplace() {
     tmp="$(mktemp)"
     jq "$@" > "$tmp"
-    last="${@: -1}"
+    last="${*: -1}"
     if [ -s "$tmp" ]; then
         mv "$tmp" "$last"
     else
@@ -117,7 +118,10 @@ defn jr jq -r
 defn jqr jq -r
 defn jqrs jq -rs
 defn jqs jq -s
+defn jc jq -c
+defn jcr jq -cr
 defn jqc jq -c
+defn jqcr jq -cr
 defn jqn jq length
 jq_keys() {
     jq -r 'keys[]' "$@"
@@ -284,12 +288,21 @@ declare_module() {
 export -f declare_module
 defn dm declare_module
 
+defn cj csvjson
+defn cji csvjson --no-inference
+defn cjis csvjson --no-inference --stream
+defn cjs csvjson --stream
+defn cjsi csvjson --stream --no-inference
 
 defn y yarn
 defn yb yarn build
 defn yi yarn install
 
 defn yr yq -r
+defn yqcj yq -pc -oj
+defn ycj yq -pc -oj
+defn yqxj yq -px -oj
+defn yxj yq -px -oj
 
 defn cna npx create-next-app
 defn cnat npx create-next-app --ts
@@ -308,12 +321,6 @@ defn jqi4a jqi --indent 4 -a
 defn jqi1a. jqi --indent 1 -a .
 defn jqi2a. jqi --indent 2 -a .
 defn jqi4a. jqi --indent 4 -a .
-
-notebook_reindent_delete_ids() {
-    jqi4a '.cells |= map(del(.id))' "$@"
-}
-export -f notebook_reindent_delete_ids
-defn nrdi notebook_reindent_delete_ids
 
 url_encode() {
   # jq -sRr @uri  # doesn't strip newline
