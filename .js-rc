@@ -284,68 +284,6 @@ declare_module() {
 export -f declare_module
 defn dm declare_module
 
-defn p2j parquet2json
-defn p2js parquet-2-json.sh schema
-defn pqs parquet-2-json.sh schema
-defn p2jn parquet-2-json.sh rowcount
-defn pqn parquet-2-json.sh rowcount
-defn p2jc parquet-2-json.sh cat
-defn pqc parquet-2-json.sh cat
-defn p2jcc parquet-2-json.sh cat -c
-defn pqcc parquet-2-json.sh cat -c
-defn p2jcl parquet-2-json.sh cat -l
-defn pqcl parquet-2-json.sh cat -l
-defn p2jcl1 parquet-2-json.sh cat -l 1
-defn pqcl1 parquet-2-json.sh cat -l 1
-defn p2jcn parquet-2-json.sh cat -l
-defn pqcn parquet-2-json.sh cat -l
-defn p2jh parquet-2-json.sh cat -l 10
-defn pqh parquet-2-json.sh cat -l 10
-defn p2jhn parquet-2-json.sh cat -l
-defn pqhn parquet-2-json.sh cat -l
-
-parquet2json_jq() {
-    if [ $# -eq 0 ]; then
-        echo "Usage: ${FUNCNAME[0]} [...args] <jq-filter>" >&2
-        return 1
-    fi
-    local _query=("${@: -1}")
-    local query="${_query[0]}"
-    set -- "${@:1:$#-1}"
-    parquet-2-json.sh cat "$@" | jq "$query"
-}
-export -f parquet2json_jq
-defn p2jq parquet2json_jq
-defn pqq parquet2json_jq
-
-parquet2json_head_pretty() {
-    parquet-2-json.sh cat -l "$@" | jq .
-}
-export -f parquet2json_head_pretty
-defn p2jhp parquet2json_head_pretty
-defn pqhp parquet2json_head_pretty
-
-parquet2jon_sort() {
-    parquet-2-json.sh cat "$@" | sort
-}
-export -f parquet2jon_sort
-defn p2jt parquet2jon_sort
-defn pqt parquet2jon_sort
-
-parquet_pretty_print_n() {
-    if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-        echo "Usage: ${FUNCNAME[0]} <n> [path]" >&2
-        return 1
-    fi
-    n="$1"; shift
-    if [ $# -eq 0 ]; then
-        parquet2json <(cat) cat -l $n | jq .
-    else
-        parquet2json "$1" cat -l $n | jq .
-    fi
-}
-export -f parquet_pretty_print_n
-defn p2jcnq parquet_pretty_print_n
 
 defn y yarn
 defn yb yarn build
@@ -376,26 +314,6 @@ notebook_reindent_delete_ids() {
 }
 export -f notebook_reindent_delete_ids
 defn nrdi notebook_reindent_delete_ids
-
-parquet2json_all() {
-    local tmpfile=
-    if [ $# -eq 0 ] || ([ $# -eq 1 ] && [ "$1" == "-" ]); then
-        tmpfile="$(mktemp)"
-        cat > "$tmpfile"
-        set -- "$tmpfile"
-    fi
-    parquet-2-json.sh rowcount "$@" && \
-    parquet-2-json.sh schema "$@" && \
-    parquet-2-json.sh cat -l 10 "$@"
-    rv=$?
-    if [ -n "$tmpfile" ]; then
-        rm "$tmpfile"
-    fi
-    return $rv
-}
-export -f parquet2json_all
-defn p2ja parquet2json_all
-defn pqa parquet2json_all
 
 url_encode() {
   # jq -sRr @uri  # doesn't strip newline
