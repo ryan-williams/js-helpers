@@ -34,9 +34,11 @@ defn npui npm uninstall
 
 defn pni pnpm i
 pnpm_install_file() {
-    for arg in "$@"; do
-        pnpm i "file://$arg"
-    done
+  local args=()
+  for arg in "$@"; do
+    args+=("file://$arg")
+  done
+  pnpm i "${args[@]}"
 }
 export -f pnpm_install_file
 defn pnif pnpm_install_file
