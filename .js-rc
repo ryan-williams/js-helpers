@@ -300,6 +300,8 @@ defn y yarn
 defn yb yarn build
 defn yi yarn install
 
+defn yj yq -oj
+defn jy yq -pj
 defn yr yq -r
 defn yqcj yq -pc -oj
 defn ycj yq -pc -oj
