@@ -112,7 +112,21 @@ jq_inplace() {
 export -f jq_inplace
 defn jqi jq_inplace
 
+jq_quiet() {
+  jq -e "$@" >/dev/null
+}
+export -f jq_quiet
+defn jqq jq_quiet
+
+jq_has() {
+  local key="$1"; shift
+  jq_quiet "has(\"$key\")" "$@"
+}
+export -f jq_has
+defn jqh jq_has
+
 defn jq. jq .
+defn jqe jq -e
 defn jqf jq -f
 defn jj jq -j
 defn jqj jq -j
