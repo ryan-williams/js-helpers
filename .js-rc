@@ -168,15 +168,9 @@ human_readable_sum() {
 }
 export -f human_readable_sum
 defn ths human_readable_sum
-defn hsm human_readable_sum
-defn hsm2 human_readable_sum 2
-defn hsm3 human_readable_sum 3
-defn hsum human_readable_sum
-defn hsum2 human_readable_sum 2
-defn hsum3 human_readable_sum 3
-defn hrs human_readable_sum
-defn hrs2 human_readable_sum 2
-defn hrs3 human_readable_sum 3
+defn hs1 human_readable_sum
+defn hs2 human_readable_sum 2
+defn hs3 human_readable_sum 3
 
 max() {
     jq_lines_to_numbers "$@" | jq max
