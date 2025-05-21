@@ -313,6 +313,7 @@ defn jy yq -pj
 defn yr yq -r
 defn yqcj yq -pc -oj
 defn ycj yq -pc -oj
+defn ycjr yq -pc -oj -r
 defn yqxj yq -px -oj
 defn yxj yq -px -oj
 
