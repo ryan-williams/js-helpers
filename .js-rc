@@ -171,6 +171,8 @@ defn ths human_readable_sum
 defn hs1 human_readable_sum
 defn hs2 human_readable_sum 2
 defn hs3 human_readable_sum 3
+defn hs4 human_readable_sum 4
+defn hs5 human_readable_sum 5
 
 max() {
     jq_lines_to_numbers "$@" | jq max
