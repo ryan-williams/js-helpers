@@ -162,6 +162,25 @@ sum() {
 }
 export -f sum
 
+sum_col() {
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: ${FUNCNAME[0]} <num> [file]" >&2
+    return 1
+  fi
+  local col="$1"; shift
+  if [ $# -eq 1 ]; then
+    cat "$1"
+  else
+    cat
+  fi | jq_lines_to_numbers | awk "{ print \$$col }" | jq add
+}
+export -f sum_col
+defn sm1 sum_col 1
+defn sm2 sum_col 2
+defn sm3 sum_col 3
+defn sm4 sum_col 4
+defn sm5 sum_col 5
+
 human_readable_sum() {
     col="${1:-1}"
     awk "{ print \$$col }" | numfmt --from=iec | sum | numfmt --to=iec
