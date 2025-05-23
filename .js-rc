@@ -172,7 +172,7 @@ sum_col() {
     cat "$1"
   else
     cat
-  fi | jq_lines_to_numbers | awk "{ print \$$col }" | jq add
+  fi | tr '\t' ' ' | tr -s ' ' | awk "{ print \$$col }" | jq_lines_to_numbers | jq add
 }
 export -f sum_col
 defn sm1 sum_col 1
@@ -182,12 +182,20 @@ defn sm4 sum_col 4
 defn sm5 sum_col 5
 
 human_readable_sum() {
-    col="${1:-1}"
-    awk "{ print \$$col }" | numfmt --from=iec | sum | numfmt --to=iec
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: ${FUNCNAME[0]} <num> [file]" >&2
+    return 1
+  fi
+  local col="$1"; shift
+  if [ $# -eq 1 ]; then
+    cat "$1"
+  else
+    cat
+  fi | tr '\t' ' ' | tr -s ' ' | awk "{ print \$$col }" | numfmt --from=iec | sum | numfmt --to=iec
 }
 export -f human_readable_sum
-defn ths human_readable_sum
-defn hs1 human_readable_sum
+defn ths human_readable_sum 1
+defn hs1 human_readable_sum 1
 defn hs2 human_readable_sum 2
 defn hs3 human_readable_sum 3
 defn hs4 human_readable_sum 4
