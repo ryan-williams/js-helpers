@@ -131,6 +131,8 @@ defn jqf jq -f
 defn jj jq -j
 defn jqj jq -j
 defn jr jq -r
+defn jrc jq -rc
+defn jqrc jq -rc
 defn jqr jq -r
 defn jqrs jq -rs
 defn jqs jq -s
