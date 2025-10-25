@@ -247,17 +247,28 @@ singleton_object() {
         flags+=("$1")
         shift
     done
-    k="$1"; shift
-    if [ "${k:0:1}" == "." ]; then
-        k="${k:1}"
+    if [ $# -eq 0 ]; then
+        # No key specified - extract value from any single-key object
+        jq "
+            if (. | length) == 1 then
+                . as \$obj | keys[0] as \$key | \$obj[\$key]
+            else
+                error(\"Expected object with exactly 1 key, found \" + (.|length|tostring) + \" keys: {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
+            end
+        " "${flags[@]}"
+    else
+        k="$1"; shift
+        if [ "${k:0:1}" == "." ]; then
+            k="${k:1}"
+        fi
+        jq "
+            if (. | length) == 1 and has(\"$k\") then
+                .$k
+            else
+                error(\"Expected object with single key \\\"$k\\\", found {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
+            end
+        " "${flags[@]}" "$@"
     fi
-    jq "
-        if (. | length) == 1 and has(\"$k\") then
-            .$k
-        else
-            error(\"Expected object with single key \\\"$k\\\", found {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
-        end
-    " "${flags[@]}" "$@"
 }
 export -f singleton_object
 defn o1 singleton_object
