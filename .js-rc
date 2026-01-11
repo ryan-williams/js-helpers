@@ -44,6 +44,9 @@ defn npla npm ls --all
 defn npln npm link
 defn npui npm uninstall
 
+defn pna pnpm add
+defn pnaw pnpm add -w
+defn pnr pnpm rm
 defn pni pnpm i
 pnpm_install_file() {
   local args=()
