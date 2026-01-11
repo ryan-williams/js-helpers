@@ -4,6 +4,10 @@
 jsh="$(dirname "${BASH_SOURCE[0]}")/js-helpers"
 export jsh
 
+if [ -n "$c" ] && [ -z "$js" ]; then
+  export js="$c/js"
+fi
+
 export PATH="$PATH:$HOME/node_modules/.bin"
 export PATH="$PATH:node_modules/.bin"
 
