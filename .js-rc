@@ -19,6 +19,14 @@ if which brew &> /dev/null; then
   fi
 fi
 
+# pnpm global bin directory
+if which pnpm &> /dev/null; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+  if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
+    export PATH="$PNPM_HOME:$PATH"
+  fi
+fi
+
 defn nr npm run
 
 defn npi npm i
