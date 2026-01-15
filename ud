@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# URL-decode stdin
+# Usage: echo "hello%20world" | ud
+python3 -c "import sys, urllib.parse as ul; print(ul.unquote(sys.stdin.read().rstrip('\n')))"

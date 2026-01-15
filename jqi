@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Run jq in-place on a file
+# Usage: jqi [jq args...] <file>
+# The last argument is treated as the file to modify
+if [ $# -eq 0 ]; then
+  echo "Usage: jqi [jq args...] <file>" >&2
+  exit 1
+fi
+tmp="$(mktemp)"
+jq "$@" > "$tmp"
+last="${*: -1}"
+if [ -s "$tmp" ]; then
+  mv "$tmp" "$last"
+else
+  rm -f "$tmp"
+  exit 1
+fi

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Sum numbers from stdin (one per line)
+# Usage: sum [file]
+jq -nR '[inputs | select(length>0) | tonumber] | add' "$@"

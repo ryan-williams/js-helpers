@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Extract single element from array, error if not exactly one
+# Usage: jq1 [-s] [jq filter]
+# -s: slurp input into array first
+args=()
+if [ "$1" == -s ]; then
+  args+=(-s)
+  shift
+fi
+jq "${args[@]}" '
+  if (. | length) == 1 then
+    .[0]
+  else
+    error("Expected 1 element, found " + (.|length|tostring) + ": " + (.|tostring))
+  end
+' | jq "${@:-.}"

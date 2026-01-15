@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Extract value from single-key object
+# Usage: o1 [jq flags...] [key] [file]
+# If no key specified, extracts value from any single-key object
+# If key specified, verifies object has only that key and extracts it
+flags=()
+while [[ "${1:-}" == -* ]]; do
+  flags+=("$1")
+  shift
+done
+if [ $# -eq 0 ]; then
+  # No key specified - extract value from any single-key object
+  jq '
+    if (. | length) == 1 then
+      . as $obj | keys[0] as $key | $obj[$key]
+    else
+      error("Expected object with exactly 1 key, found " + (.|length|tostring) + " keys: {\"" + (.|keys|join("\", \"")) + "\"}")
+    end
+  ' "${flags[@]}"
+else
+  k="$1"; shift
+  if [ "${k:0:1}" == "." ]; then
+    k="${k:1}"
+  fi
+  jq "
+    if (. | length) == 1 and has(\"$k\") then
+      .$k
+    else
+      error(\"Expected object with single key \\\"$k\\\", found {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\" )
+    end
+  " "${flags[@]}" "$@"
+fi

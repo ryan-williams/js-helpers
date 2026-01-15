@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# URL-encode stdin
+# Usage: echo "hello world" | ue
+python3 -c "import sys, urllib.parse as ul; print(ul.quote(sys.stdin.read().rstrip('\n'), safe=''))"

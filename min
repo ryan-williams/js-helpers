@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Find min of numbers from stdin (one per line)
+# Usage: min [file]
+jq -nR '[inputs | select(length>0) | tonumber] | min' "$@"

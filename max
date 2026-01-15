@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Find max of numbers from stdin (one per line)
+# Usage: max [file]
+jq -nR '[inputs | select(length>0) | tonumber] | max' "$@"

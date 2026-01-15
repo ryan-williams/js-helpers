@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Delete columns from JSON objects
+# Usage: jqd <col1,col2,...> [jq args...]
+if [ $# -eq 0 ]; then
+  echo "Usage: jqd <col1,col2,...> [jq args...]" >&2
+  exit 1
+fi
+cols="$1"; shift
+# Convert "col1,col2" to '."col1", ."col2"' for jq del()
+jq_args=$(echo "$cols" | sed 's/^/."/; s/,/", ."/g; s/$/"/')
+jq "del($jq_args)" "$@"

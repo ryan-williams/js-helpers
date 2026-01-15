@@ -114,19 +114,6 @@ defn pji pretty_print_json_inplace
 defn pjl pretty-print-json-less
 defn jql pretty-print-json-less
 
-jq_inplace() {
-    tmp="$(mktemp)"
-    jq "$@" > "$tmp"
-    last="${*: -1}"
-    if [ -s "$tmp" ]; then
-        mv "$tmp" "$last"
-    else
-        return 1
-    fi
-}
-export -f jq_inplace
-defn jqi jq_inplace
-
 jq_quiet() {
   jq -e "$@" >/dev/null
 }
@@ -162,22 +149,6 @@ jq_keys() {
 export -f jq_keys
 defn jqk jq_keys
 
-# Delete columns from JSON objects
-# Usage: jqd <col1,col2,...> [jq args...]
-jq_del() {
-  if [ $# -eq 0 ]; then
-    echo "Usage: jqd <col1,col2,...> [jq args...]" >&2
-    return 1
-  fi
-  local cols="$1"; shift
-  # Convert "col1,col2" to '."col1", ."col2"' for jq del()
-  local jq_args
-  jq_args=$(echo "$cols" | sed 's/^/."/; s/,/", ."/g; s/$/"/')
-  jq "del($jq_args)" "$@"
-}
-export -f jq_del
-defn jqd jq_del
-
 jq_lines_to_array() {
     jq -nR '[inputs | select(length>0)]' "$@"
 }
@@ -190,24 +161,6 @@ jq_lines_to_numbers() {
 export -f jq_lines_to_numbers
 defn jql2n jq_lines_to_numbers
 
-sum() {
-    jq_lines_to_numbers "$@" | jq add
-}
-export -f sum
-
-sum_col() {
-  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-    echo "Usage: ${FUNCNAME[0]} <num> [file]" >&2
-    return 1
-  fi
-  local col="$1"; shift
-  if [ $# -eq 1 ]; then
-    cat "$1"
-  else
-    cat
-  fi | tr '\t' ' ' | tr -s ' ' | awk "{ print \$$col }" | jq_lines_to_numbers | jq add
-}
-export -f sum_col
 defn sm1 sum_col 1
 defn sm2 sum_col 2
 defn sm3 sum_col 3
@@ -234,76 +187,19 @@ defn hs3 human_readable_sum 3
 defn hs4 human_readable_sum 4
 defn hs5 human_readable_sum 5
 
-max() {
-    jq_lines_to_numbers "$@" | jq max
-}
-export -f max
-
-min() {
-    jq_lines_to_numbers "$@" | jq min
-}
-export -f min
-
 jq_filter() {
     jq 'if length == 0 then null else . end | select(.)' "$@"
 }
 export -f jq_filter
 defn jf jq_filter
 
-singleton() {
-    args=()
-    if [ "$1" == -s ]; then
-        args+=(-s)
-        shift
-    fi
-    jq "${args[@]}" "
-        if (. | length) == 1 then
-            .[0]
-        else
-            error(\"Expected 1 element, found \" + (.|length|tostring) + \": \" + (.|tostring))
-        end
-    " | jq "${@:-.}"
-}
-export -f singleton
-defn jq1 singleton
-defn j1 singleton
-defn j1r singleton -r
-defn j1s singleton -s
-defn j1rs singleton -s -r
-defn s1 singleton
+defn j1 jq1
+defn j1r jq1 -r
+defn j1s jq1 -s
+defn j1rs jq1 -s -r
+defn s1 jq1
 
-singleton_object() {
-    flags=()
-    while [[ "$1" == -* ]]; do
-        flags+=("$1")
-        shift
-    done
-    if [ $# -eq 0 ]; then
-        # No key specified - extract value from any single-key object
-        jq "
-            if (. | length) == 1 then
-                . as \$obj | keys[0] as \$key | \$obj[\$key]
-            else
-                error(\"Expected object with exactly 1 key, found \" + (.|length|tostring) + \" keys: {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
-            end
-        " "${flags[@]}"
-    else
-        k="$1"; shift
-        if [ "${k:0:1}" == "." ]; then
-            k="${k:1}"
-        fi
-        jq "
-            if (. | length) == 1 and has(\"$k\") then
-                .$k
-            else
-                error(\"Expected object with single key \\\"$k\\\", found {\\\"\" + (.|keys|join(\"\\\", \\\"\")) + \"\\\"}\")
-            end
-        " "${flags[@]}" "$@"
-    fi
-}
-export -f singleton_object
-defn o1 singleton_object
-defn o1r singleton_object -r
+defn o1r o1 -r
 
 keys() {
     jq -r 'keys[]' "$@"
@@ -407,19 +303,6 @@ defn jqi4a jqi --indent 4 -a
 defn jqi1a. jqi --indent 1 -a .
 defn jqi2a. jqi --indent 2 -a .
 defn jqi4a. jqi --indent 4 -a .
-
-url_encode() {
-  # jq -sRr @uri  # doesn't strip newline
-  python3 -c "import sys, urllib.parse as ul; print(ul.quote(sys.stdin.read().rstrip('\n'), safe=''))"
-}
-export -f url_encode
-defn ue url_encode
-
-url_decode() {
-  python3 -c "import sys, urllib.parse as ul; print(ul.unquote(sys.stdin.read().rstrip('\n')))"
-}
-export -f url_decode
-defn ud url_decode
 
 defn yqxj yq -p=xml -oj
 defn yxj yq -p=xml -oj
