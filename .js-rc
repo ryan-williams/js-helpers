@@ -162,6 +162,22 @@ jq_keys() {
 export -f jq_keys
 defn jqk jq_keys
 
+# Delete columns from JSON objects
+# Usage: jqd <col1,col2,...> [jq args...]
+jq_del() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: jqd <col1,col2,...> [jq args...]" >&2
+    return 1
+  fi
+  local cols="$1"; shift
+  # Convert "col1,col2" to '."col1", ."col2"' for jq del()
+  local jq_args
+  jq_args=$(echo "$cols" | sed 's/^/."/; s/,/", ."/g; s/$/"/')
+  jq "del($jq_args)" "$@"
+}
+export -f jq_del
+defn jqd jq_del
+
 jq_lines_to_array() {
     jq -nR '[inputs | select(length>0)]' "$@"
 }
