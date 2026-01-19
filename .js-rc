@@ -84,6 +84,7 @@ defn pnl3 pnpm ls --depth 3
 defn pnl4 pnpm ls --depth 4
 defn pnl5 pnpm ls --depth 5
 defn pnu pnpm update
+defn pnul pnpm update -L
 
 defn pnln pnpm link
 pnpm_link_ls() {
