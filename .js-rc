@@ -43,6 +43,8 @@ defn npl npm ls
 defn npla npm ls --all
 defn npln npm link
 defn npui npm uninstall
+defn npv npm version
+defn npvp npm version patch
 
 defn pna pnpm add
 defn pnaw pnpm add -w
