@@ -310,3 +310,8 @@ defn jqi4a. jqi --indent 4 -a .
 defn yqxj yq -p=xml -oj
 defn yxj yq -p=xml -oj
 defn yxjr yq -p=xml -oj -r
+
+# pds (pnpm-dep-source) shell aliases
+if command -v pds &>/dev/null; then
+  eval "$(pds shell-integration)"
+fi
