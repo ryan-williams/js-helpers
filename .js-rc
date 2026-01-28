@@ -47,6 +47,13 @@ defn npv npm version
 defn npvm npm version minor
 defn npvp npm version patch
 
+npm_open() {
+  local pkg="${1:-$(jq -r .name package.json)}"
+  open "https://www.npmjs.com/package/$pkg"
+}
+export -f npm_open
+defn npo npm_open
+
 defn pna pnpm add
 defn pnaw pnpm add -w
 defn pnr pnpm rm
