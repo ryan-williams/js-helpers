@@ -159,6 +159,8 @@ jq_keys() {
 }
 export -f jq_keys
 defn jqk jq_keys
+defn jqdc jqd -c
+defn jqcd jqd -c
 
 jq_lines_to_array() {
     jq -nR '[inputs | select(length>0)]' "$@"

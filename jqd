@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 # Delete columns from JSON objects
-# Usage: jqd <col1,col2,...> [jq args...]
+# Usage: jqd [jq flags...] <col1,col2,...> [jq args...]
+# Column names may optionally have leading dots (e.g. .foo,.bar)
+flags=()
+while [[ "${1:-}" == -* ]]; do
+  flags+=("$1")
+  shift
+done
 if [ $# -eq 0 ]; then
-  echo "Usage: jqd <col1,col2,...> [jq args...]" >&2
+  echo "Usage: jqd [jq flags...] <col1,col2,...> [jq args...]" >&2
   exit 1
 fi
 cols="$1"; shift
-# Convert "col1,col2" to '."col1", ."col2"' for jq del()
-jq_args=$(echo "$cols" | sed 's/^/."/; s/,/", ."/g; s/$/"/')
-jq "del($jq_args)" "$@"
+# Strip leading dots, then convert "col1,col2" to '."col1", ."col2"' for jq del()
+jq_args=$(echo "$cols" | sed 's/\.\([^,]\)/\1/g; s/^/."/; s/,/", ."/g; s/$/"/')
+jq "${flags[@]}" "del($jq_args)" "$@"
