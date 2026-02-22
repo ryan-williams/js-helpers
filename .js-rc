@@ -56,7 +56,8 @@ defn npo npm_open
 
 defn pna pnpm add
 defn pnaw pnpm add -w
-defn pnr pnpm rm
+defn pnr pnpm run
+defn pnrm pnpm rm
 defn pni pnpm i
 pnpm_install_file() {
   local args=()
@@ -109,7 +110,6 @@ pnpm_link_ls() {
 export -f pnpm_link_ls
 defn pnll pnpm_link_ls
 defn pnui pnpm uninstall
-defn pnrm pnpm uninstall
 
 defn ppj pretty-print-json
 pretty_print_json_inplace() {
