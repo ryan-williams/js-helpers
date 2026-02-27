@@ -87,6 +87,8 @@ pnpm_install_dev_types() {
 export -f pnpm_install_dev_types
 defn pnidt pnpm_install_dev_types
 defn pnl pnpm ls
+defn pnlr pnpm ls -r
+defn plr pnpm ls -r
 defn pnld pnpm ls --depth
 defn pnl0 pnpm ls --depth 0
 defn pnl1 pnpm ls --depth 1
